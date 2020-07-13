@@ -1,0 +1,19 @@
+---
+schemaVersion: '2.2'
+description: Run a CPU stress on an instance
+parameters:
+  duration:
+    type: String
+    description: The duration - in seconds - of the attack. (Required)
+    default: "60"
+  cpu:
+    type: String
+    description: 'Specify the number of CPU stressors to use (default all)'
+    default: "0"
+mainSteps:
+- action: aws:runShellScript
+  name: ChaosCPUAttack
+  inputs:
+    runCommand:
+    # https://www.mankier.com/1/stress-ng#Examples
+    - stress-ng --cpu {{ cpu }} --cpu-method matrixprod -t {{ duration }}s
